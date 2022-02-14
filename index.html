@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>slider</title>
+	<style>
+
+*{
+	box-sizing: border-box;
+}
+
+body{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+button{
+	background-color: transparent;
+	color: white;
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
+.slider-btns{
+	position: absolute;
+	z-index: 1;
+}
+
+.slider-btns>button{
+	width: 15px;
+	height: 15px;
+	border: 1px solid black;
+	border-radius: 15px;
+	margin-right: 10px;
+}
+
+.active-sl-btn{
+	background: #EE2E3B;
+}
+
+.contaner-center{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.popular-slider{
+	width: 85vw;
+	border: 1px solid red;
+	-display: flex;
+	-flex-wrap: wrap;
+	-height: 600px;
+	position: relative;
+	overflow: hidden;
+}
+
+.none-select-txt{
+	user-select: none;
+}
+
+.zag-pop{
+
+}
+
+.poplular-slider-track{
+	position: relative;
+	width: calc((85vw * 5) + 80px);
+	bottom: 0;
+	display: flex;
+	justify-content: space-between;
+	height: 100%;
+}
+
+.popular{
+	display: flex;
+	-width: 1200px;
+	-width: 85vw;
+	width: 85vw;
+	background-color: yellow;
+	border: 1px solid black;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.popular-slider-btn{
+	left: 0;
+	bottom: 0;
+}
+	</style>
+</head>
+<body ondragstart="return false;" ondrop="return false;">
+	<div class="popular-slider contaner-center">
+		<h2 class="zag zag-pop"><span>ПОПУЛЯРНЫЕ </span>КОЛЛЕКЦИИ</h2>
+		<div class="poplular-slider-track">
+		<div class="popular">
+			<img src="img/polularslider/banner.png" class="cimg" alt="">
+		</div>
+
+		<div class="popular">
+			<img src="img/polularslider/tenager.png" class="cimg" alt="">
+		</div>
+
+		<div class="popular">
+			<img src="img/polularslider/3.png" class="cimg" alt="">
+		</div>
+
+		<div class="popular">
+			<img src="img/polularslider/4.png" class="cimg" alt="">
+		</div>
+
+		<div class="popular">
+			<img src="img/polularslider/5.png" class="cimg" alt="">
+		</div>
+		</div>
+	</div>
+		
+
+		<div class="slider-btns popular-slider-btn">
+				<button class="active-sl-btn" onclick="popularSlider.setSlide(0)" id="0"></button>
+				<button onclick="popularSlider.setSlide(1)" id="1"></button>
+				<button onclick="popularSlider.setSlide(2)" id="2"></button>
+				<button onclick="popularSlider.setSlide(3)" id="3"></button>
+				<button onclick="popularSlider.setSlide(4)" id="4"></button>
+	</div>
+	<script src="SuperSlider.js">
+		
+	</script>
+</body>
+</html>
