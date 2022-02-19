@@ -66,6 +66,9 @@ getEvent = () => event.type.search('touch') !== -1 ? event.touches[0] : event,
 swipeStartp = function() {
   let evt = getEvent();
   isSwipe = true;
+  
+  a = Math.abs(popularSlider.getTrX(track));
+  console.log("tr "+a)
 
   // берем начальную позицию курсора по оси Х
   posInit = posX1 = evt.clientX;
@@ -98,9 +101,11 @@ swipeActionp = function() {
       //console.log(posX1)
       posX1 = evt.clientX;
       
-      a = a + posX2;
+      a = Number(a) + Number(posX2);
+      console.log("a "+a)
       //st = popularSlider.getTrX(document.getElementsByClassName("poplular-slider-track")[0]);
       //console.log(st);
+      //console.log('getTr '+)
       document.getElementsByClassName("poplular-slider-track")[0].setAttribute("style", "transform: translateX("+(-a)+"px);");
       //a = a + posX2;
       //document.getElementsByClassName('sliderview')[0].setAttribute("style", "transform: translateX("+(-a)+"px);");
@@ -116,7 +121,7 @@ swipeEndp = function() {
     console.log(popularSlider.getTrX(document.getElementsByClassName("poplular-slider-track")[0]));
 
     if(posFinal > 360){
-      popularSlider.setSlide(1);
+      //popularSlider.setSlide(1);
     }
 
     //a = posYFinal;
