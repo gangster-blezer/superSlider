@@ -47,6 +47,8 @@ var popularSlider = new SuperSlider("poplular-slider-track",".popular",5,20);
 console.log(popularSlider.getEvent);
 
 var a;
+var start_time;
+var end_time;
 a = 0;
 track = document.getElementsByClassName("poplular-slider-track")[0];
 
@@ -58,6 +60,7 @@ track = document.getElementsByClassName("poplular-slider-track")[0];
 getEvent = () => event.type.search('touch') !== -1 ? event.touches[0] : event,
 
 swipeStartp = function() {
+  start_time = Date.now();
   let evt = getEvent();
   isSwipe = true;
   popularSlider.track.classList.remove("trans");
@@ -110,16 +113,18 @@ swipeActionp = function() {
 }
 
 swipeEndp = function() {
+    end_time = Date.now();
+    time = end_time - start_time;
+
     posFinal = posInit - posX1;
     posYFinal = Math.abs(posYInit - posY1);
+    speed_x = posFinal/time;
     console.log("end")
     //console.log(popularSlider.getTrX(document.getElementsByClassName("poplular-slider-track")[0]));
-    console.log(posFinal)
-    console.log((popularSlider.slideWidth+popularSlider.slideMargin)/2);
-    console.log(popularSlider.num_slide);
-    if(posFinal > (popularSlider.slideWidth+popularSlider.slideMargin)/2){
+    
+    if((posFinal > (popularSlider.slideWidth+popularSlider.slideMargin)/2)||speed_x > 0.5){
       popularSlider.setSlide(popularSlider.num_slide+1);
-    }else if(posFinal < -(popularSlider.slideWidth+popularSlider.slideMargin)/2){
+    }else if((posFinal < -(popularSlider.slideWidth+popularSlider.slideMargin)/2)||speed_x < -0.5){
         popularSlider.setSlide(popularSlider.num_slide-1);
     }else{
       popularSlider.setSlide(popularSlider.num_slide);
