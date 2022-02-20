@@ -1,9 +1,12 @@
 class SuperSlider{
   constructor(trackClass,slideClass,slidesCount,mrg){
-    this.track = document.getElementsByClassName(trackClass)[0];
+    //this.track = document.getElementsByClassName(trackClass)[0];
+    this.track = document.querySelector("."+trackClass);
     this.slideWidth = document.querySelector(slideClass).offsetWidth;
     this.slidesCount = slidesCount;
-    this.slideMargin = 20;//(document.querySelector("."+trackClass).offsetWidth - this.slideWidth)/5;
+    this.slideMargin = 20;
+    this.num_slide = 0;
+    //(document.querySelector("."+trackClass).offsetWidth - this.slideWidth)/5;
     //console.log((document.querySelector("."+trackClass).offsetWidth - (5*this.slideWidth)))
   }
 
@@ -24,21 +27,12 @@ class SuperSlider{
 
   setSlide(n){
     //console.log(this.slideMargin);
-    let time = 800;
-    //console.log(this);
-    
-    let start = Date.now();
-
-    this.timer = setInterval(() => {
-       let timePassed = Date.now() - start;
-       let tran = -(this.getSlidePath(n-1)) - (((this.slideWidth + this.slideMargin)*timePassed)/time);
+        this.track.classList.add("trans");
+       let tran = -this.getSlidePath(n);
+       
        this.track.setAttribute("style", "transform: translateX("+tran+"px);");
+       this.num_slide = n;
 
-       if(timePassed > time){
-        clearInterval(this.timer);
-       }
-
-    }, 10);
 
     //this.track.setAttribute("style", "transform: translateX("+ -(SuperSlider.getSlidePath(n))+"px);");
   }
@@ -66,7 +60,8 @@ getEvent = () => event.type.search('touch') !== -1 ? event.touches[0] : event,
 swipeStartp = function() {
   let evt = getEvent();
   isSwipe = true;
-  
+  popularSlider.track.classList.remove("trans");
+
   a = Math.abs(popularSlider.getTrX(track));
   console.log("tr "+a)
 
@@ -79,7 +74,7 @@ swipeStartp = function() {
 
 
   track.addEventListener('pointermove', swipeActionp);
-  track.addEventListener('pointercancel', swipeEndp);
+  track.addEventListener('pointerup', swipeEndp);
 
 },
 swipeActionp = function() {
@@ -102,7 +97,7 @@ swipeActionp = function() {
       posX1 = evt.clientX;
       
       a = Number(a) + Number(posX2);
-      console.log("a "+a)
+      //console.log("a "+a)
       //st = popularSlider.getTrX(document.getElementsByClassName("poplular-slider-track")[0]);
       //console.log(st);
       //console.log('getTr '+)
@@ -118,10 +113,16 @@ swipeEndp = function() {
     posFinal = posInit - posX1;
     posYFinal = Math.abs(posYInit - posY1);
     console.log("end")
-    console.log(popularSlider.getTrX(document.getElementsByClassName("poplular-slider-track")[0]));
-
-    if(posFinal > 360){
-      //popularSlider.setSlide(1);
+    //console.log(popularSlider.getTrX(document.getElementsByClassName("poplular-slider-track")[0]));
+    console.log(posFinal)
+    console.log((popularSlider.slideWidth+popularSlider.slideMargin)/2);
+    console.log(popularSlider.num_slide);
+    if(posFinal > 2*(popularSlider.slideWidth+popularSlider.slideMargin)/3){
+      popularSlider.setSlide(popularSlider.num_slide+1);
+    }else if(posFinal < (popularSlider.slideWidth+popularSlider.slideMargin)/3){
+        popularSlider.setSlide(popularSlider.num_slide-1);
+    }else{
+      popularSlider.setSlide(popularSlider.num_slide);
     }
 
     //a = posYFinal;
@@ -132,12 +133,12 @@ swipeEndp = function() {
     track.removeEventListener('mouseup', swipeEndp);
     
     track.removeEventListener('pointermove', swipeActionp);
-    track.removeEventListener('pointercancel', swipeEndp);
+    track.removeEventListener('pointerup', swipeEndp);
 }
 
 track.addEventListener('mousedown', swipeStartp);
 track.addEventListener('mouseup', swipeEndp);
 
 track.addEventListener('pointerdown', swipeStartp);
-track.addEventListener('pointercancel', swipeEndp);
+track.addEventListener('pointerup', swipeEndp);
 
