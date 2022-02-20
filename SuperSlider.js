@@ -117,9 +117,9 @@ swipeEndp = function() {
     console.log(posFinal)
     console.log((popularSlider.slideWidth+popularSlider.slideMargin)/2);
     console.log(popularSlider.num_slide);
-    if(posFinal > 2*(popularSlider.slideWidth+popularSlider.slideMargin)/3){
+    if(posFinal > (popularSlider.slideWidth+popularSlider.slideMargin)/2){
       popularSlider.setSlide(popularSlider.num_slide+1);
-    }else if(posFinal < (popularSlider.slideWidth+popularSlider.slideMargin)/3){
+    }else if(posFinal < -(popularSlider.slideWidth+popularSlider.slideMargin)/2){
         popularSlider.setSlide(popularSlider.num_slide-1);
     }else{
       popularSlider.setSlide(popularSlider.num_slide);
