@@ -105,7 +105,7 @@ button{
 <body ondragstart="return false;" ondrop="return false;">
 	<div class="popular-slider contaner-center">
 		<h2 class="zag zag-pop"><span>ПОПУЛЯРНЫЕ </span>КОЛЛЕКЦИИ</h2>
-		<div class="poplular-slider-track">
+		<div class="poplular-slider-track trans">
 		<div href="/" class="popular">
 			<img src="img/polularslider/banner.png" class="cimg" alt="">
 		</div>
@@ -136,6 +136,8 @@ button{
 				<button onclick="popularSlider.setSlide(3)" id="3"></button>
 				<button onclick="popularSlider.setSlide(4)" id="4"></button>
 	</div>
+	<button style="width: 80px;height: 80px;color: red;" onclick="popularSlider.setSlide('next')">></button>
+	<button style="width: 80px;height: 80px;color: red;" onclick="popularSlider.setSlide('back')"><</button>
 	<script src="SuperSlider.js">
 		
 	</script>

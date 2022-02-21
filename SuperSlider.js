@@ -1,11 +1,16 @@
 class SuperSlider{
-  constructor(trackClass,slideClass,slidesCount,mrg){
+  constructor(trackClass,slideClass,slidesCount,mrg,anim){
     //this.track = document.getElementsByClassName(trackClass)[0];
     this.track = document.querySelector("."+trackClass);
     this.slideWidth = document.querySelector(slideClass).offsetWidth;
     this.slidesCount = slidesCount;
     this.slideMargin = 20;
     this.num_slide = 0;
+    this.anim = anim;
+    this.track.addEventListener('mousedown', this.swipeStart);
+    this.track.addEventListener('mouseup', this.swipeEnd);
+    this.track.addEventListener('pointerdown', this.swipeStart);
+    this.track.addEventListener('pointerup', this.swipeEnd);
     //(document.querySelector("."+trackClass).offsetWidth - this.slideWidth)/5;
     //console.log((document.querySelector("."+trackClass).offsetWidth - (5*this.slideWidth)))
   }
@@ -26,124 +31,77 @@ class SuperSlider{
   }
 
   setSlide(n){
-    //console.log(this.slideMargin);
-        this.track.classList.add("trans");
-       let tran = -this.getSlidePath(n);
-       
-       this.track.setAttribute("style", "transform: translateX("+tran+"px);");
-       this.num_slide = n;
+      this.track.classList.add(this.anim);
 
-
-    //this.track.setAttribute("style", "transform: translateX("+ -(SuperSlider.getSlidePath(n))+"px);");
-  }
-
-  /*GetEvent(event){
-    let getEvent = () => event.type.search('touch') !== -1 ? event.touches[0] : event;
-    return getEvent();
-  }*/
-}
-
-var popularSlider = new SuperSlider("poplular-slider-track",".popular",5,20);
-console.log(popularSlider.getEvent);
-
-var a;
-var start_time;
-var end_time;
-a = 0;
-track = document.getElementsByClassName("poplular-slider-track")[0];
-
-  getEvent = function() {
-  return event.type.search('touch') !== -1 ? event.touches[0] : event;
-  // p.s. event - аргумент по умолчанию в функции
-},
-// или es6
-getEvent = () => event.type.search('touch') !== -1 ? event.touches[0] : event,
-
-swipeStartp = function() {
-  start_time = Date.now();
-  let evt = getEvent();
-  isSwipe = true;
-  popularSlider.track.classList.remove("trans");
-
-  a = Math.abs(popularSlider.getTrX(track));
-  console.log("tr "+a)
-
-  // берем начальную позицию курсора по оси Х
-  posInit = posX1 = evt.clientX;
-  posYInit = posY1 = evt.clientY;
-  //console.log(posInit)
-  track.addEventListener('mousemove', swipeActionp);
-  track.addEventListener('mouseup', swipeEndp);
-
-
-  track.addEventListener('pointermove', swipeActionp);
-  track.addEventListener('pointerup', swipeEndp);
-
-},
-swipeActionp = function() {
-  let evt = getEvent();
-
-  posY2 = posY1 - evt.clientY;
-  posY1 = evt.clientY;
-
-      let posY = Math.abs(posY2);
-      //console.log(posY);
-      if (posY > 111) {
-        isSwipe = false;
-      } else if (posY < 111) {
-        isSwipe = true;
+      if(n=="next"){
+        n = this.num_slide+1;
+      }else if(n=="back"){
+        n = this.num_slide-1;
       }
 
-  if(isSwipe){
-      posX2 = posX1 - evt.clientX;
-      //console.log(posX1)
-      posX1 = evt.clientX;
+      let tran = -this.getSlidePath(n);
+      this.track.setAttribute("style", "transform: translateX("+tran+"px);");
+      this.num_slide = n
       
-      a = Number(a) + Number(posX2);
-      //console.log("a "+a)
-      //st = popularSlider.getTrX(document.getElementsByClassName("poplular-slider-track")[0]);
-      //console.log(st);
-      //console.log('getTr '+)
-      document.getElementsByClassName("poplular-slider-track")[0].setAttribute("style", "transform: translateX("+(-a)+"px);");
-      //a = a + posX2;
-      //document.getElementsByClassName('sliderview')[0].setAttribute("style", "transform: translateX("+(-a)+"px);");
   }
 
-  
-}
+  swipeStart = () => {
+    let evt = event.type.search('touch') !== -1 ? event.touches[0] : event;
+    this.start_time = Date.now();
+    this.track.classList.remove(this.anim);
+    this.a = Math.abs(this.getTrX(this.track));
+    this.posInit = this.posX1 = evt.clientX;
+    this.posYInit = this.posY1 = evt.clientY;
+    console.log(this.a)
+    this.track.addEventListener('mousemove', this.swipeAction);
+    this.track.addEventListener('mouseup', this.swipeEnd);
 
-swipeEndp = function() {
-    end_time = Date.now();
-    time = end_time - start_time;
 
-    posFinal = posInit - posX1;
-    posYFinal = Math.abs(posYInit - posY1);
-    speed_x = posFinal/time;
+    this.track.addEventListener('pointermove', this.swipeAction);
+    this.track.addEventListener('pointerup', this.swipeEnd);
+
+  }
+
+
+  swipeAction = () => {
+    let evt = event.type.search('touch') !== -1 ? event.touches[0] : event;
+
+    this.posY2 = this.posY1 - evt.clientY;
+    this.posY1 = evt.clientY;
+    this.posX2 = this.posX1 - evt.clientX;
+    //console.log(posX1)
+    this.posX1 = evt.clientX;
+      
+    this.a = Number(this.a) + Number(this.posX2);
+    this.track.setAttribute("style", "transform: translateX("+(-this.a)+"px);");
+  }
+
+  swipeEnd = () => {
+    this.end_time = Date.now();
+    this.time = this.end_time - this.start_time;
+
+    this.posFinal = this.posInit - this.posX1;
+    this.posYFinal = Math.abs(this.posYInit - this.posY1);
+    this.speed_x = this.posFinal/this.time;
     console.log("end")
     //console.log(popularSlider.getTrX(document.getElementsByClassName("poplular-slider-track")[0]));
     
-    if((posFinal > (popularSlider.slideWidth+popularSlider.slideMargin)/2)||speed_x > 0.5){
-      popularSlider.setSlide(popularSlider.num_slide+1);
-    }else if((posFinal < -(popularSlider.slideWidth+popularSlider.slideMargin)/2)||speed_x < -0.5){
-        popularSlider.setSlide(popularSlider.num_slide-1);
+    if((this.posFinal > (this.slideWidth+this.slideMargin)/2)||this.speed_x > 0.5){
+      this.setSlide(this.num_slide+1);
+    }else if((this.posFinal < -(this.slideWidth+this.slideMargin)/2)||this.speed_x < -0.5){
+        this.setSlide(this.num_slide-1);
     }else{
-      popularSlider.setSlide(popularSlider.num_slide);
+      this.setSlide(this.num_slide);
     }
 
-    //a = posYFinal;
-    //console.log(posYFinal);
-    isScroll = false;
-    isSwipe = false;
-    track.removeEventListener('mousemove', swipeActionp);
-    track.removeEventListener('mouseup', swipeEndp);
+    this.track.removeEventListener('mousemove', this.swipeAction);
+    this.track.removeEventListener('mouseup', this.swipeEnd);
     
-    track.removeEventListener('pointermove', swipeActionp);
-    track.removeEventListener('pointerup', swipeEndp);
+    this.track.removeEventListener('pointermove', this.swipeAction);
+    this.track.removeEventListener('pointerup', this.swipeEnd);
+  }
 }
 
-track.addEventListener('mousedown', swipeStartp);
-track.addEventListener('mouseup', swipeEndp);
-
-track.addEventListener('pointerdown', swipeStartp);
-track.addEventListener('pointerup', swipeEndp);
+var popularSlider = new SuperSlider("poplular-slider-track",".popular",5,20,"trans");
+//console.log(popularSlider.GetEvent);
 
