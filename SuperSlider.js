@@ -39,6 +39,14 @@ class SuperSlider{
         n = this.num_slide-1;
       }
 
+      if(n==-1){
+        n=this.slidesCount-1;
+      }
+
+      if(n==this.slidesCount){
+        n=0;
+      }
+
       let tran = -this.getSlidePath(n);
       this.track.setAttribute("style", "transform: translateX("+tran+"px);");
       this.num_slide = n

@@ -26,6 +26,7 @@ button{
 
 .slider-btns{
 	position: absolute;
+	bottom: 0;
 	z-index: 1;
 }
 
@@ -35,6 +36,10 @@ button{
 	border: 1px solid black;
 	border-radius: 15px;
 	margin-right: 10px;
+}
+
+.slider-btns>button:hover{
+	cursor: pointer;
 }
 
 .active-sl-btn{
@@ -136,8 +141,11 @@ button{
 				<button onclick="popularSlider.setSlide(3)" id="3"></button>
 				<button onclick="popularSlider.setSlide(4)" id="4"></button>
 	</div>
-	<button style="width: 80px;height: 80px;color: red;" onclick="popularSlider.setSlide('next')">></button>
-	<button style="width: 80px;height: 80px;color: red;" onclick="popularSlider.setSlide('back')"><</button>
+	<div class="btn-upr" style="width: 510px; margin-right: auto; margin-left: auto;">
+		<button style="font-size: 80px; width: 250px;height: 250px;color: red; border: 1px solid black;" onclick="popularSlider.setSlide('back')"><</button>
+	<button style="font-size: 80px; width: 250px;height: 250px;color: red; border: 1px solid black;" onclick="popularSlider.setSlide('next')">></button>
+	</div>
+	
 	<script src="SuperSlider.js">
 		
 	</script>
